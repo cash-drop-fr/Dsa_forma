@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA — Digital Success Academy 🚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  /* ===== THEME VARIABLES ===== */
+  :root {
+    --bg: #0a0a12;
+    --surface: #12121e;
+    --surface2: #1a1a2e;
+    --card: #1e1e35;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --text: #f0f0ff;
+    --muted: #8888aa;
+    --border: #2a2a45;
+    --prog-bg: #2a2a45;
+    --badge: #7c3aed22;
+    --badge-text: #a78bfa;
+    --shadow: 0 4px 32px #7c3aed18;
+    --glow: 0 0 24px #7c3aed44;
+  }
+  body.light {
+    --bg: #f8f8ff;
+    --surface: #ffffff;
+    --surface2: #f0f0ff;
+    --card: #ffffff;
+    --accent: #6d28d9;
+    --accent2: #0891b2;
+    --accent3: #d97706;
+    --text: #111128;
+    --muted: #555577;
+    --border: #d0d0ee;
+    --prog-bg: #e0e0f5;
+    --badge: #ede9fe;
+    --badge-text: #5b21b6;
+    --shadow: 0 4px 24px #6d28d912;
+    --glow: none;
+  }
+  body.white {
+    --bg: #ffffff;
+    --surface: #f5f5f5;
+    --surface2: #eeeeee;
+    --card: #ffffff;
+    --accent: #111111;
+    --accent2: #444444;
+    --accent3: #888888;
+    --text: #111111;
+    --muted: #666666;
+    --border: #dddddd;
+    --prog-bg: #e8e8e8;
+    --badge: #f0f0f0;
+    --badge-text: #333333;
+    --shadow: 0 2px 12px #00000010;
+    --glow: none;
+  }
+  body.neon {
+    --bg: #000510;
+    --surface: #000d20;
+    --surface2: #001030;
+    --card: #001530;
+    --accent: #00ff88;
+    --accent2: #00cfff;
+    --accent3: #ff006a;
+    --text: #e0fff0;
+    --muted: #44aa88;
+    --border: #003040;
+    --prog-bg: #002030;
+    --badge: #00ff8818;
+    --badge-text: #00ff88;
+    --shadow: 0 4px 32px #00ff8822;
+    --glow: 0 0 30px #00ff8844;
+  }
+
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.4s, color 0.4s;
+    line-height: 1.6;
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+  /* ===== GLOBAL PROGRESS BAR ===== */
+  #reading-progress {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%; transition: width 0.2s;
+    box-shadow: var(--glow);
+  }
+
+  /* ===== THEME SWITCHER ===== */
+  #theme-bar {
+    position: fixed; top: 12px; right: 12px; z-index: 1000;
+    display: flex; gap: 6px; align-items: center;
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 6px 10px; border-radius: 40px;
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(10px);
+  }
+  #theme-bar span { font-size: 11px; color: var(--muted); font-family: 'Syne', sans-serif; margin-right: 4px; }
+  .theme-btn {
+    width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent;
+    cursor: pointer; transition: transform 0.2s, border 0.2s;
+    outline: none;
+  }
+  .theme-btn:hover { transform: scale(1.2); }
+  .theme-btn.active { border-color: var(--accent); }
+  .t-dark  { background: radial-gradient(circle, #7c3aed, #0a0a12); }
+  .t-light { background: radial-gradient(circle, #a78bfa, #f8f8ff); }
+  .t-white { background: radial-gradient(circle, #888, #fff); }
+  .t-neon  { background: radial-gradient(circle, #00ff88, #000510); }
+
+  /* ===== LAYOUT ===== */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== HERO ===== */
+  .hero {
+    padding: 90px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, var(--accent)22 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--badge); color: var(--badge-text);
+    border: 1px solid var(--accent); border-radius: 40px;
+    padding: 5px 16px; font-size: 12px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 20px;
+    font-family: 'Syne', sans-serif;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--accent2) 60%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { font-size: 1.1rem; color: var(--muted); max-width: 600px; margin: 0 auto 28px; }
+  .hero-stats {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;
+    margin-top: 28px;
+  }
+  .stat {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 14px 22px; min-width: 120px;
+    box-shadow: var(--shadow);
+  }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 11px; color: var(--muted); }
+
+  /* ===== SOMMAIRE ===== */
+  .toc {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px 28px 20px; margin: 40px auto;
+    max-width: 900px;
+  }
+  .toc-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 18px; cursor: pointer;
+  }
+  .toc-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+  .toc-toggle { font-size: 1.3rem; color: var(--accent); transition: transform 0.3s; }
+  .toc-toggle.open { transform: rotate(180deg); }
+  .toc-list { display: none; }
+  .toc-list.visible { display: block; }
+  .toc-category {
+    margin-bottom: 10px;
+  }
+  .toc-cat-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 6px; padding-left: 4px;
+  }
+  .toc-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px;
+  }
+  .toc-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: 10px;
+    border: 1px solid transparent;
+    text-decoration: none; color: var(--text);
+    font-size: 0.87rem; transition: all 0.2s;
+  }
+  .toc-item:hover { background: var(--surface2); border-color: var(--border); color: var(--accent); }
+  .toc-icon { font-size: 1rem; }
+  .toc-progress-mini {
+    margin-top: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .toc-prog-bar { flex: 1; height: 5px; background: var(--prog-bg); border-radius: 3px; overflow: hidden; }
+  .toc-prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width 0.4s; }
+  .toc-prog-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+  /* ===== SECTIONS ===== */
+  section { padding: 50px 0; }
+  .section-label {
+    display: inline-block;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: 10px;
+    font-family: 'Syne', sans-serif;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    margin-bottom: 14px; color: var(--text);
+  }
+  h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1.1rem; margin-bottom: 8px; color: var(--text);
+  }
+  p { color: var(--muted); margin-bottom: 12px; font-size: 0.97rem; }
+  strong { color: var(--text); }
+
+  /* ===== DIVIDER ===== */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; box-shadow: var(--shadow);
+    transition: border-color 0.25s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+  /* ===== MODULE CARDS ===== */
+  .module-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .module-card:hover { border-color: var(--accent); background: var(--surface2); }
+  .module-header { display: flex; align-items: center; gap: 12px; }
+  .module-num {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .module-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.93rem; }
+  .module-content { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+  .module-content.open { display: block; }
+  .module-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .module-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.88rem; color: var(--muted); }
+  .module-list li::before { content: '→'; color: var(--accent); font-size: 0.85rem; margin-top: 1px; flex-shrink: 0; }
+  .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+
+  /* ===== STEPS ===== */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 20px; position: relative;
+    padding-bottom: 28px;
+  }
+  .step:last-child { padding-bottom: 0; }
+  .step-line {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .step-dot {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: 'Syne', sans-serif; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--glow);
+    font-size: 0.95rem;
+  }
+  .step-connector {
+    width: 2px; flex: 1; background: var(--border); margin-top: 4px;
+  }
+  .step:last-child .step-connector { display: none; }
+  .step-body { padding-top: 8px; }
+  .step-body h3 { margin-bottom: 6px; font-size: 1rem; }
+
+  /* ===== HIGHLIGHT BOX ===== */
+  .highlight {
+    background: linear-gradient(135deg, var(--accent)18, var(--accent2)10);
+    border: 1px solid var(--accent);
+    border-radius: 16px; padding: 22px; margin: 20px 0;
+  }
+  .highlight-icon { font-size: 1.8rem; margin-bottom: 8px; }
+  .highlight h3 { color: var(--text); }
+
+  /* ===== WARNING ===== */
+  .warning {
+    background: #f59e0b12; border: 1px solid #f59e0b55;
+    border-radius: 12px; padding: 16px 18px; margin: 16px 0;
+    font-size: 0.9rem;
+  }
+  .warning strong { color: #f59e0b; }
+
+  /* ===== TIPS ===== */
+  .tip {
+    background: var(--surface2); border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0; padding: 14px 16px; margin: 12px 0;
+    font-size: 0.9rem;
+  }
+
+  /* ===== BADGE ===== */
+  .badge {
+    display: inline-block;
+    background: var(--badge); color: var(--badge-text);
+    border: 1px solid var(--accent); border-radius: 20px;
+    padding: 3px 10px; font-size: 11px; font-weight: 600;
+    font-family: 'Syne', sans-serif;
+  }
+  .badge-green { background: #10b98118; color: #10b981; border-color: #10b981; }
+  .badge-orange { background: #f59e0b18; color: #f59e0b; border-color: #f59e0b; }
+
+  /* ===== BONUS SECTION ===== */
+  #bonus-section { margin-top: 40px; }
+  .bonus-header {
+    display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(135deg, var(--accent)22, var(--accent2)12);
+    border: 1px solid var(--accent); border-radius: 16px;
+    padding: 20px 24px; margin-bottom: 20px;
+  }
+  .bonus-icon { font-size: 2rem; }
+  .bonus-subtitle { font-size: 0.88rem; color: var(--muted); margin-top: 2px; }
+  .bonus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+  .bonus-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px; position: relative; overflow: hidden;
+  }
+  .bonus-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  }
+  .bonus-card.color-1::before { background: linear-gradient(90deg, #7c3aed, #06b6d4); }
+  .bonus-card.color-2::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+  .bonus-card.color-3::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+  .bonus-card.color-4::before { background: linear-gradient(90deg, #ec4899, #8b5cf6); }
+  .bonus-card.color-5::before { background: linear-gradient(90deg, #f97316, #facc15); }
+  .bonus-card.color-6::before { background: linear-gradient(90deg, #14b8a6, #3b82f6); }
+  .bonus-emoji { font-size: 1.5rem; margin-bottom: 8px; }
+  .bonus-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 6px; }
+  .bonus-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 10px; }
+  .bonus-days {
+    display: inline-block; background: var(--badge); color: var(--badge-text);
+    border: 1px solid var(--accent); border-radius: 20px;
+    padding: 2px 10px; font-size: 11px; font-weight: 600;
+  }
+
+  /* ===== NICHE FINDER ===== */
+  .niche-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 16px; }
+  .niche-item {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 12px; text-align: center;
+    cursor: pointer; transition: all 0.2s; font-size: 0.88rem;
+  }
+  .niche-item:hover { border-color: var(--accent); background: var(--card); transform: translateY(-2px); }
+  .niche-emoji { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+  /* ===== CODE BLOCK ===== */
+  .code-block {
+    background: #0a0a18; border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; font-family: monospace;
+    font-size: 0.84rem; color: #a78bfa; overflow-x: auto;
+    margin: 12px 0;
+  }
+  body.light .code-block, body.white .code-block { background: #f0f0ff; color: #5b21b6; }
+
+  /* ===== CHECKLIST ===== */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .checklist li {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px; background: var(--surface2); border-radius: 10px;
+    font-size: 0.9rem;
+  }
+  .check-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ===== FAQ ===== */
+  .faq-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; margin-bottom: 8px; overflow: hidden;
+  }
+  .faq-q {
+    padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    font-weight: 500; font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: var(--surface2); }
+  .faq-arrow { color: var(--accent); transition: transform 0.3s; font-size: 1.1rem; }
+  .faq-arrow.open { transform: rotate(90deg); }
+  .faq-a { display: none; padding: 0 20px 16px; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border); padding-top: 14px; }
+  .faq-a.open { display: block; }
+
+  /* ===== CTA BANNER ===== */
+  .cta-banner {
+    background: linear-gradient(135deg, var(--accent)30, var(--accent2)20);
+    border: 1px solid var(--accent); border-radius: 20px;
+    padding: 36px 28px; text-align: center; margin: 40px 0;
+    position: relative; overflow: hidden;
+  }
+  .cta-banner::before {
+    content: ''; position: absolute;
+    top: -50%; left: -20%; width: 60%; height: 200%;
+    background: var(--accent);
+    opacity: 0.04; transform: rotate(15deg);
+    pointer-events: none;
+  }
+  .cta-banner h2 { margin-bottom: 10px; }
+  .cta-btn {
+    display: inline-block; margin-top: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; padding: 14px 32px; border-radius: 40px;
+    text-decoration: none; font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow);
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: var(--glow); }
+
+  /* ===== PLATFORM CARDS ===== */
+  .platform-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 20px;
+    display: flex; gap: 14px; align-items: flex-start;
+    transition: all 0.2s;
+  }
+  .platform-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .platform-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .platform-name { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 4px; }
+  .platform-desc { font-size: 0.86rem; color: var(--muted); }
+
+  /* ===== TOOL TABLE ===== */
+  .tool-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+  .tool-table th {
+    text-align: left; padding: 10px 14px;
+    background: var(--surface2); color: var(--accent2);
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    font-family: 'Syne', sans-serif;
+  }
+  .tool-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+  .tool-table tr:last-child td { border-bottom: none; }
+  .tool-table tr:hover td { background: var(--surface2); }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center; padding: 40px 20px;
+    font-size: 0.82rem; color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.5s ease forwards; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+  .pulsing { animation: pulse 2s infinite; }
+
+  /* ===== BACK BUTTON ===== */
+  #back-btn {
+    position: fixed; top: 12px; left: 12px; z-index: 1001;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 14px; border-radius: 40px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+    box-shadow: var(--shadow); transition: all 0.2s;
+    text-decoration: none;
+  }
+  #back-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateX(-2px); }
+
+  /* ===== CATEGORY PROGRESS GRID ===== */
+  .cat-progress-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 32px 0 0;
+  }
+  .cat-prog-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 16px 18px;
+    text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 8px;
+    transition: all 0.2s; cursor: pointer;
+  }
+  .cat-prog-card:hover, .cat-prog-card.active {
+    border-color: var(--accent); background: var(--surface2);
+    transform: translateY(-2px);
+  }
+  .cat-prog-top {
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cat-prog-icon { font-size: 1.3rem; }
+  .cat-prog-pct {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1rem; color: var(--accent);
+  }
+  .cat-prog-label {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    font-size: 0.82rem; line-height: 1.2;
+  }
+  .cat-prog-bar {
+    width: 100%; height: 5px; background: var(--prog-bg);
+    border-radius: 3px; overflow: hidden;
+  }
+  .cat-prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px; width: 0%; transition: width 0.5s;
+  }
+
+  @media (max-width: 600px) {
+    #theme-bar { top: 8px; right: 8px; }
+    .hero { padding: 80px 16px 30px; }
+    .toc { padding: 18px 14px 14px; }
+    section { padding: 36px 0; }
+    .cta-banner { padding: 24px 16px; }
+    .cat-progress-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body class="dark">
+
+<!-- Reading progress -->
+<div id="reading-progress"></div>
+
+<!-- Back button -->
+<a id="back-btn" onclick="history.back()" href="#">← Retour</a>
+
+<!-- Theme switcher -->
+<div id="theme-bar">
+  <span>Thème</span>
+  <button class="theme-btn t-dark active" onclick="setTheme('dark')" title="Sombre violet"></button>
+  <button class="theme-btn t-light" onclick="setTheme('light')" title="Clair violet"></button>
+  <button class="theme-btn t-white" onclick="setTheme('white')" title="Blanc / Noir"></button>
+  <button class="theme-btn t-neon" onclick="setTheme('neon')" title="Néon"></button>
+</div>
+
+<!-- Section progress bar -->
+
+<!-- =================== HERO =================== -->
+<div class="container">
+  <div class="hero fade-in">
+    <div class="hero-badge">📚 Formation Complète • Marketing Digital</div>
+    <h1>Digital Success<br>Academy — DSA</h1>
+    <p>La formation MRR numéro 1 du marché francophone pour créer, vendre et automatiser ton business digital — même en partant de zéro.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">48+</div><div class="stat-label">Modules</div></div>
+      <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Ressources</div></div>
+      <div class="stat"><div class="stat-num">11 900+</div><div class="stat-label">Membres</div></div>
+      <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Droits MRR</div></div>
+      <div class="stat"><div class="stat-num">15</div><div class="stat-label">Produits PLR</div></div>
+    </div>
+  </div>
+
+  <!-- =================== PROGRESSION PAR CATÉGORIE =================== -->
+  <div style="margin: 8px 0 0;">
+    <div class="section-label">📊 Ta Progression</div>
+    <h2 style="margin-bottom:16px">Catégories de la Formation</h2>
+    <div class="cat-progress-grid">
+      <a href="#cest-quoi" class="cat-prog-card" data-section="cest-quoi">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">🎯</span>
+          <span class="cat-prog-pct" id="pct-cest-quoi">0%</span>
+        </div>
+        <div class="cat-prog-label">DSA — C'est quoi ?</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-cest-quoi"></div></div>
+      </a>
+      <a href="#mrr-plr" class="cat-prog-card" data-section="mrr-plr">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">🔑</span>
+          <span class="cat-prog-pct" id="pct-mrr-plr">0%</span>
+        </div>
+        <div class="cat-prog-label">MRR vs PLR</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-mrr-plr"></div></div>
+      </a>
+      <a href="#modules" class="cat-prog-card" data-section="modules">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">📚</span>
+          <span class="cat-prog-pct" id="pct-modules">0%</span>
+        </div>
+        <div class="cat-prog-label">Modules DSA</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-modules"></div></div>
+      </a>
+      <a href="#comment-vendre" class="cat-prog-card" data-section="comment-vendre">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">💸</span>
+          <span class="cat-prog-pct" id="pct-comment-vendre">0%</span>
+        </div>
+        <div class="cat-prog-label">Comment Vendre ?</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-comment-vendre"></div></div>
+      </a>
+      <a href="#faceless" class="cat-prog-card" data-section="faceless">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">🎭</span>
+          <span class="cat-prog-pct" id="pct-faceless">0%</span>
+        </div>
+        <div class="cat-prog-label">Faceless / DCP</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-faceless"></div></div>
+      </a>
+      <a href="#bonus-section" class="cat-prog-card" data-section="bonus-section">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">🎁</span>
+          <span class="cat-prog-pct" id="pct-bonus-section">0%</span>
+        </div>
+        <div class="cat-prog-label">Formations Bonus PLR</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-bonus-section"></div></div>
+      </a>
+      <a href="#bos" class="cat-prog-card" data-section="bos">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">💻</span>
+          <span class="cat-prog-pct" id="pct-bos">0%</span>
+        </div>
+        <div class="cat-prog-label">Guide BOS + Cursor</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-bos"></div></div>
+      </a>
+      <a href="#agent-ia" class="cat-prog-card" data-section="agent-ia">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">🤖</span>
+          <span class="cat-prog-pct" id="pct-agent-ia">0%</span>
+        </div>
+        <div class="cat-prog-label">Créer ton Agent IA</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-agent-ia"></div></div>
+      </a>
+      <a href="#marketing-reel" class="cat-prog-card" data-section="marketing-reel">
+        <div class="cat-prog-top">
+          <span class="cat-prog-icon">📈</span>
+          <span class="cat-prog-pct" id="pct-marketing-reel">0%</span>
+        </div>
+        <div class="cat-prog-label">Marketing Réel</div>
+        <div class="cat-prog-bar"><div class="cat-prog-fill" id="prog-marketing-reel"></div></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- =================== SOMMAIRE =================== -->
+  <div class="toc" id="toc" style="margin-top:32px">
+    <div class="toc-header" onclick="toggleToc()">
+      <div class="toc-title">📋 Sommaire de la formation</div>
+      <div class="toc-toggle" id="toc-arrow">▼</div>
+    </div>
+    <div class="toc-list visible" id="toc-list">
+      <div class="toc-category">
+        <div class="toc-cat-title">📖 Les Bases</div>
+        <div class="toc-grid">
+          <a href="#cest-quoi" class="toc-item"><span class="toc-icon">🎯</span>C'est quoi la DSA ?</a>
+          <a href="#mrr-plr" class="toc-item"><span class="toc-icon">🔑</span>MRR vs PLR</a>
+          <a href="#pour-qui" class="toc-item"><span class="toc-icon">👤</span>Pour qui ?</a>
+        </div>
+      </div>
+      <div class="toc-category">
+        <div class="toc-cat-title">📚 Modules DSA</div>
+        <div class="toc-grid">
+          <a href="#modules" class="toc-item"><span class="toc-icon">🧠</span>Mindset & Fondations</a>
+          <a href="#modules" class="toc-item"><span class="toc-icon">📱</span>Réseaux & Audience</a>
+          <a href="#modules" class="toc-item"><span class="toc-icon">🛒</span>Tunnels de vente</a>
+          <a href="#modules" class="toc-item"><span class="toc-icon">✍️</span>Copywriting</a>
+          <a href="#modules" class="toc-item"><span class="toc-icon">📧</span>Email Marketing</a>
+          <a href="#modules" class="toc-item"><span class="toc-icon">🤖</span>IA & Automatisation</a>
+        </div>
+      </div>
+      <div class="toc-category">
+        <div class="toc-cat-title">💰 Vendre & Monétiser</div>
+        <div class="toc-grid">
+          <a href="#comment-vendre" class="toc-item"><span class="toc-icon">💸</span>Comment vendre ?</a>
+          <a href="#vendre-plus" class="toc-item"><span class="toc-icon">💡</span>Stratégies avancées</a>
+          <a href="#plateformes" class="toc-item"><span class="toc-icon">🏪</span>Beacons & Plateformes</a>
+          <a href="#niches" class="toc-item"><span class="toc-icon">🎯</span>Trouver sa niche</a>
+          <a href="#outils" class="toc-item"><span class="toc-icon">🛠️</span>Outils essentiels</a>
+        </div>
+      </div>
+      <div class="toc-category">
+        <div class="toc-cat-title">🎁 Bonus & Extras</div>
+        <div class="toc-grid">
+          <a href="#faceless" class="toc-item"><span class="toc-icon">🎭</span>Faceless / DCP</a>
+          <a href="#bonus-section" class="toc-item"><span class="toc-icon">🎁</span>Formations Bonus</a>
+          <a href="#bos" class="toc-item"><span class="toc-icon">💻</span>Guide BOS + Cursor</a>
+          <a href="#agent-ia" class="toc-item"><span class="toc-icon">🤖</span>Créer ton Agent IA</a>
+          <a href="#faq" class="toc-item"><span class="toc-icon">❓</span>FAQ</a>
+        </div>
+      </div>
+      <div class="toc-progress-mini">
+        <span style="font-size:12px;color:var(--muted)">Progression lecture :</span>
+        <div class="toc-prog-bar"><div class="toc-prog-fill" id="toc-fill" style="width:0%"></div></div>
+        <span class="toc-prog-label" id="toc-label">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- =================== C'EST QUOI DSA =================== -->
+  <section id="cest-quoi">
+    <div class="section-label">🎯 Introduction</div>
+    <h2>C'est quoi la DSA ?</h2>
+    <p>La <strong>Digital Success Academy (DSA)</strong> est la formation en marketing digital la plus populaire du marché francophone. Elle est basée sur un modèle <strong>MRR (Master Resell Rights)</strong> : tu apprends à construire un business digital et tu peux revendre la formation en gardant <strong>100% des bénéfices</strong>.</p>
+    <p>Créée pour les débutants comme pour les entrepreneurs confirmés, la DSA couvre tout le spectre du business en ligne : de la création de produits digitaux jusqu'à l'automatisation complète de tes ventes.</p>
+
+    <div class="highlight">
+      <div class="highlight-icon">🚀</div>
+      <h3>L'idée clé de la DSA</h3>
+      <p>Tu paies une seule fois → tu accèdes à une formation complète → tu peux revendre cette même formation et garder 100% de chaque vente. Résultat : une vente peut rentabiliser ton investissement initial.</p>
+    </div>
+
+    <div class="cards-grid" style="margin-top:20px">
+      <div class="card">
+        <h3>🎓 Un programme complet</h3>
+        <p>48 modules, 200+ ressources couvrant tout le marketing digital : réseaux sociaux, tunnels de vente, copywriting, email, IA...</p>
+      </div>
+      <div class="card">
+        <h3>💰 Une licence MRR incluse</h3>
+        <p>Revends la DSA à ton prix et garde 100% des bénéfices. Chaque vente peut te rapporter entre 297€ et 997€ selon ton positionnement.</p>
+      </div>
+      <div class="card">
+        <h3>📦 15 Produits PLR offerts</h3>
+        <p>Des ebooks et ressources prêts à personnaliser et revendre immédiatement. Rien à créer, tout est prêt.</p>
+      </div>
+      <div class="card">
+        <h3>🤝 Communauté + Coaching</h3>
+        <p>Accès à la communauté Skool (11 900+ membres), lives hebdomadaires, coaching WhatsApp privé et suivi personnalisé.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== MRR vs PLR =================== -->
+  <section id="mrr-plr">
+    <div class="section-label">🔑 Concepts Clés</div>
+    <h2>MRR vs PLR — La différence essentielle</h2>
+
+    <div class="cards-grid">
+      <div class="card" style="border-color: var(--accent);">
+        <div style="font-size:1.8rem;margin-bottom:10px">♻️</div>
+        <h3>MRR — Master Resell Rights</h3>
+        <p>Tu peux <strong>revendre le produit tel quel</strong> et garder 100% des bénéfices. Tu ne peux pas modifier le contenu ni le brander à ton nom, mais tu peux fixer ton propre prix.</p>
+        <p><strong>Exemple :</strong> tu achètes la DSA à 597€ → tu la revends à 597€ → tu as remboursé la formation et tu peux la revendre à l'infini. <strong>Chaque vente = 597€ pour toi, sans rien débourser de plus.</strong></p>
+        <span class="badge">DSA utilise ce modèle</span>
+      </div>
+      <div class="card" style="border-color: var(--accent2);">
+        <div style="font-size:1.8rem;margin-bottom:10px">🏷️</div>
+        <h3>PLR — Private Label Rights</h3>
+        <p>Tu peux <strong>modifier, rebaptiser, personnaliser</strong> le produit comme si c'était le tien. Ajoute ton logo, change le nom, crée ta propre offre à partir de la base.</p>
+        <p><strong>Exemple :</strong> tu prends un ebook PLR sur la nutrition, tu le rebrandises "Mon Guide Minceur", tu le vends 29€.</p>
+        <span class="badge" style="border-color:var(--accent2);color:var(--accent2);background:var(--accent2)15">15 produits inclus dans DSA</span>
+      </div>
+    </div>
+
+    <div class="warning" style="margin-top:20px">
+      <strong>⚠️ Important :</strong> Le modèle MRR est légal en France tant que la formation a une vraie valeur pédagogique et qu'il y a transparence totale sur le modèle. Reste transparent avec tes clients sur ce que tu vends. Évite les systèmes où l'essentiel du revenu vient du recrutement plutôt que du produit.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== POUR QUI =================== -->
+  <section id="pour-qui">
+    <div class="section-label">👤 Profils</div>
+    <h2>Pour qui est la DSA ?</h2>
+    <div class="cards-grid">
+      <div class="card"><h3>🧑‍💻 Débutants</h3><p>Zéro expérience requise. Tout est expliqué étape par étape, sans jargon technique. Si tu as un smartphone et une connexion, tu peux démarrer.</p></div>
+      <div class="card"><h3>💼 Salariés en reconversion</h3><p>Tu veux créer un complément de revenu ou quitter ton emploi ? La DSA est faite pour être suivie en dehors de tes heures de travail.</p></div>
+      <div class="card"><h3>📸 Créateurs de contenu</h3><p>Instagram, TikTok, YouTube... La DSA t'apprend à monétiser ton audience avec des produits digitaux à forte marge.</p></div>
+      <div class="card"><h3>🏢 Entrepreneurs</h3><p>Digitalise ton activité existante, crée de nouveaux produits numériques et automatise tes ventes.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== MODULES =================== -->
+  <section id="modules">
+    <div class="section-label">📚 Programme</div>
+    <h2>Les Modules de la DSA</h2>
+    <p>Clique sur un module pour voir son contenu détaillé.</p>
+
+    <div class="modules-grid">
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">01</div>
+          <div class="module-title">🧠 Fondations & Mindset</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Comprendre le marketing digital en 2025</li>
+            <li>Formule Mindset Performance — discipline et focus</li>
+            <li>Les erreurs fatales des débutants</li>
+            <li>Poser des bases saines pour un projet durable</li>
+            <li>Comment penser comme un entrepreneur digital</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">02</div>
+          <div class="module-title">🔑 Maîtrise du MRR & PLR</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Comprendre MRR vs PLR en détail</li>
+            <li>Comment revendre la DSA légalement</li>
+            <li>Transformer des PLR en offres uniques</li>
+            <li>Fixer son prix et se différencier</li>
+            <li>Les 15 produits PLR inclus expliqués</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">03</div>
+          <div class="module-title">📱 Créer & Faire Grandir une Audience</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Instagram Mastery : stratégie, algorithme, croissance</li>
+            <li>TikTok & Reels Mastery — vidéos virales</li>
+            <li>Programme Business Sans Visage (faceless)</li>
+            <li>Planning éditorial pour 600 Reels</li>
+            <li>Automatisation & règles Instagram</li>
+            <li>Ramener des millions de vues organiquement</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">04</div>
+          <div class="module-title">🛒 Tunnels de Vente Automatisés</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Créer un tunnel de vente de A à Z</li>
+            <li>Outils : Systeme.io, ClickFunnels, Beacons</li>
+            <li>Pages de capture, pages de vente, upsells</li>
+            <li>Automatiser les relances et le suivi</li>
+            <li>Systèmes de follow-up prospects</li>
+            <li>Optimiser son taux de conversion</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">05</div>
+          <div class="module-title">✍️ Copywriting & 1000 Hooks</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Les bases du copywriting persuasif</li>
+            <li>1000 hooks prêts à copier-coller</li>
+            <li>Écrire une page de vente qui convertit</li>
+            <li>Les formules AIDA, PAS, BAB</li>
+            <li>Hooks pour Reels, stories, emails</li>
+            <li>Tester et optimiser ses textes de vente</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">06</div>
+          <div class="module-title">📧 Email Marketing (Copier-Coller)</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Construire une liste email de qualité</li>
+            <li>Séquences emails déjà rédigées à copier</li>
+            <li>Newsletters qui convertissent</li>
+            <li>Automatisation des campagnes</li>
+            <li>Taux d'ouverture et délivrabilité</li>
+            <li>Outils : Systeme.io, Brevo, ActiveCampaign</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">07</div>
+          <div class="module-title">🤖 IA & Automatisation</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Gagner de l'argent avec l'IA</li>
+            <li>ChatGPT pour créer du contenu en masse</li>
+            <li>Générer des visuels avec Midjourney/DALL-E</li>
+            <li>Automatiser sa présence sur les réseaux</li>
+            <li>Créer des agents IA pour son business</li>
+            <li>IA pour le copywriting et la création de produits</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">08</div>
+          <div class="module-title">🎨 Branding & Canva Templating</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Créer son identité visuelle</li>
+            <li>Tout sur Canva — templates, infographies, couvertures</li>
+            <li>Branding sur Instagram, TikTok et autres</li>
+            <li>CapCut Infinity Reels — montage vidéo</li>
+            <li>Les niches les plus rentables et comment s'y positionner</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">09</div>
+          <div class="module-title">📦 Créer ses Produits Digitaux</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Liste de tous les types de produits digitaux</li>
+            <li>Créer une formation en ligne de A à Z</li>
+            <li>Créer et vendre des ebooks</li>
+            <li>Templates, presets, ressources numériques</li>
+            <li>Communautés et abonnements (membership)</li>
+            <li>Héberger ses produits : Gumroad, Beacons, Payhip</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">10</div>
+          <div class="module-title">📈 Marketing d'Affiliation</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Comprendre l'affiliation digitale</li>
+            <li>Trouver les meilleures offres à promouvoir</li>
+            <li>Créer du contenu qui vend en affiliation</li>
+            <li>Systèmes de tracking et de lien affilié</li>
+            <li>Plateformes : ClickBank, Systeme.io, 1TPE</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">11</div>
+          <div class="module-title">💰 Monétisation de Profil</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Transformer ton profil en machine à vendre</li>
+            <li>Liens en bio optimisés (Beacons, Linktree)</li>
+            <li>Stories et posts qui convertissent</li>
+            <li>Vendre sans être "vendeur" — authenticité</li>
+            <li>Passer d'un revenu ponctuel à récurrent</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="module-card" onclick="toggleModule(this)">
+        <div class="module-header">
+          <div class="module-num">12</div>
+          <div class="module-title">🚀 Stratégie de Lancement</div>
+        </div>
+        <div class="module-content">
+          <ul class="module-list">
+            <li>Plan d'action 7 jours : offre → contenu → tunnel → vente</li>
+            <li>Formule DSA pour convertir ses premiers clients</li>
+            <li>Validation 1 to 1 & Audit étapes</li>
+            <li>Structurer son activité sur le long terme</li>
+            <li>Scaler son business digital de façon durable</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== COMMENT VENDRE =================== -->
+  <section id="comment-vendre">
+    <div class="section-label">💸 Vente</div>
+    <h2>Comment Vendre un Produit Digital ?</h2>
+    <p>Vendre un produit digital en 2025, c'est maîtriser un système en 5 étapes clés. Voici la méthode enseignée dans la DSA :</p>
+
+    <div class="steps" style="margin-top:28px">
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🎯 Choisir son offre & sa niche</h3>
+          <p>Avant tout, tu dois savoir <strong>ce que tu vends et à qui</strong>. La DSA enseigne à identifier les niches les plus rentables (santé, business, développement perso, relations, sport...) et à créer ou choisir un produit qui résout un vrai problème.</p>
+          <div class="tip">💡 <strong>Astuce DSA :</strong> Les meilleures niches 2025 sont la productivité, la perte de poids, l'apprentissage des langues, le business digital et le bien-être mental.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>📱 Créer sa présence en ligne</h3>
+          <p>Un compte Instagram ou TikTok optimisé est ton <strong>point de départ</strong>. La DSA t'apprend à créer du contenu viral (Reels, vidéos courtes) même sans montrer ton visage grâce au <strong>programme Business Sans Visage (Faceless)</strong>.</p>
+          <ul class="checklist" style="margin-top:10px">
+            <li><span class="check-icon">✅</span>Bio optimisée avec proposition de valeur claire</li>
+            <li><span class="check-icon">✅</span>Lien en bio (Beacons / Linktree) vers ton produit</li>
+            <li><span class="check-icon">✅</span>3 à 5 posts de valeur par semaine minimum</li>
+            <li><span class="check-icon">✅</span>Stories quotidiennes pour engager ton audience</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🛒 Mettre en place son tunnel de vente</h3>
+          <p>Un tunnel de vente = le chemin que parcourt ton visiteur jusqu'à l'achat. La DSA t'apprend à créer des tunnels simples et efficaces avec des outils gratuits ou peu coûteux.</p>
+          <div class="code-block">
+Visiteur → Page de capture (email gratuit) → Email de bienvenue → Page de vente → Paiement → Email de livraison
+          </div>
+          <p>Pour la DSA, tu peux utiliser <strong>Systeme.io</strong> (gratuit jusqu'à 2000 contacts) ou <strong>Beacons</strong> pour héberger et vendre directement.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>✍️ Écrire du contenu qui convertit (Copywriting)</h3>
+          <p>Le copywriting, c'est l'art d'écrire pour <strong>vendre sans paraître vendeur</strong>. Les 3 formules les plus utilisées :</p>
+          <div class="cards-grid" style="margin-top:12px">
+            <div class="card" style="padding:14px">
+              <h3 style="font-size:0.9rem">AIDA</h3>
+              <p style="font-size:0.82rem"><strong>A</strong>ttention → <strong>I</strong>ntérêt → <strong>D</strong>ésir → <strong>A</strong>ction. La formule classique pour tout contenu de vente.</p>
+            </div>
+            <div class="card" style="padding:14px">
+              <h3 style="font-size:0.9rem">PAS</h3>
+              <p style="font-size:0.82rem"><strong>P</strong>roblème → <strong>A</strong>gitation → <strong>S</strong>olution. Parfait pour les Reels et les descriptions produit.</p>
+            </div>
+            <div class="card" style="padding:14px">
+              <h3 style="font-size:0.9rem">BAB</h3>
+              <p style="font-size:0.82rem"><strong>B</strong>efore → <strong>A</strong>fter → <strong>B</strong>ridge. Montre la transformation que ton produit apporte.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">5</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🔄 Automatiser et Scaler</h3>
+          <p>Une fois les premières ventes générées, la DSA t'apprend à <strong>automatiser tout le système</strong> : emails automatiques, séquences de follow-up, contenus programmés... Pour que l'argent rentre même quand tu dors.</p>
+          <div class="highlight" style="margin-top:14px">
+            <h3>💡 L'objectif : 1 vente par jour</h3>
+            <p>Si tu vends à 597€ avec la licence MRR, 1 vente/jour = <strong>+17 900€/mois</strong>. Même 2 ventes par semaine = <strong>+4 800€/mois</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== PLATEFORMES & BEACONS =================== -->
+  <section id="plateformes">
+    <div class="section-label">🏪 Plateformes</div>
+    <h2>Où Vendre ? Beacons & Les Meilleures Plateformes</h2>
+    <p>La DSA t'enseigne à utiliser les bonnes plateformes pour vendre tes produits digitaux. Voici les options recommandées :</p>
+
+    <div class="cards-grid" style="margin-top:20px">
+      <div class="platform-card">
+        <div class="platform-icon">🌐</div>
+        <div>
+          <div class="platform-name">Beacons.ai <span class="badge badge-green">Recommandé</span></div>
+          <div class="platform-desc">Idéal pour les créateurs. Crée une bio link page et vends directement depuis ton lien Instagram/TikTok. Commission faible, paiement direct. Parfait pour démarrer gratuitement.</div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">⚙️</div>
+        <div>
+          <div class="platform-name">Systeme.io <span class="badge badge-green">Gratuit</span></div>
+          <div class="platform-desc">Tunnel de vente complet gratuit jusqu'à 2000 contacts. Emails automatiques, pages de vente, affiliation. Tout-en-un pour débuter sans payer.</div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">🟡</div>
+        <div>
+          <div class="platform-name">Gumroad</div>
+          <div class="platform-desc">Simple pour vendre des ebooks, templates, presets. Pas besoin de tunnel, paiement direct. Idéal pour les PLR.</div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">💳</div>
+        <div>
+          <div class="platform-name">Stripe / PayPal</div>
+          <div class="platform-desc">Pour encaisser directement les paiements sur ton site ou tunnel. Virement direct sur ton compte bancaire.</div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">🏫</div>
+        <div>
+          <div class="platform-name">Skool</div>
+          <div class="platform-desc">Plateforme de formation utilisée par la DSA. Héberge tes modules vidéo, crée ta communauté, gère les accès membres.</div>
+        </div>
+      </div>
+      <div class="platform-card">
+        <div class="platform-icon">📦</div>
+        <div>
+          <div class="platform-name">Payhip / Lemon Squeezy</div>
+          <div class="platform-desc">Alternatives à Gumroad. Payhip gère la TVA européenne automatiquement — parfait si tu vends en Europe.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:24px">
+      <div class="highlight-icon">💡</div>
+      <h3>Stratégie Beacons pour la DSA</h3>
+      <p>Crée ta page Beacons → ajoute ton lien d'affiliation DSA + tes produits PLR → met le lien dans ta bio Instagram/TikTok → chaque clic vers ton lien peut générer une vente. Simple et efficace.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== NICHES =================== -->
+  <section id="niches">
+    <div class="section-label">🎯 Business</div>
+    <h2>Trouver sa Niche & son Business</h2>
+    <p>La niche, c'est le domaine dans lequel tu vas créer du contenu et vendre tes produits. Une bonne niche = public cible clair + problème réel à résoudre + gens prêts à payer.</p>
+
+    <h3 style="margin-top:20px;margin-bottom:8px">🔥 Les niches les plus rentables en 2025</h3>
+    <div class="niche-grid">
+      <div class="niche-item"><span class="niche-emoji">💰</span>Business Digital & MRR</div>
+      <div class="niche-item"><span class="niche-emoji">🏋️</span>Fitness & Perte de Poids</div>
+      <div class="niche-item"><span class="niche-emoji">🧘</span>Bien-être & Mental</div>
+      <div class="niche-item"><span class="niche-emoji">💕</span>Relations & Séduction</div>
+      <div class="niche-item"><span class="niche-emoji">📈</span>Finance Personnelle</div>
+      <div class="niche-item"><span class="niche-emoji">🍽️</span>Nutrition & Régimes</div>
+      <div class="niche-item"><span class="niche-emoji">🎨</span>Créativité & Design</div>
+      <div class="niche-item"><span class="niche-emoji">📸</span>Photo & Vidéo</div>
+      <div class="niche-item"><span class="niche-emoji">🌿</span>Développement Perso</div>
+      <div class="niche-item"><span class="niche-emoji">👶</span>Parentalité</div>
+      <div class="niche-item"><span class="niche-emoji">🐾</span>Animaux</div>
+      <div class="niche-item"><span class="niche-emoji">✈️</span>Voyage & Lifestyle</div>
+    </div>
+
+    <div class="tip" style="margin-top:20px">
+      💡 <strong>Comment choisir ta niche :</strong> Pose-toi 3 questions → (1) Est-ce que j'ai de l'intérêt ou des connaissances dans ce domaine ? (2) Est-ce qu'il y a des gens qui payent pour résoudre ce problème ? (3) Est-ce que je peux créer du contenu régulièrement sur ce sujet ?
+    </div>
+
+    <h3 style="margin-top:28px;margin-bottom:10px">🗺️ Les 3 types de business avec la DSA</h3>
+    <div class="cards-grid">
+      <div class="card">
+        <h3>🔁 Revente DSA (MRR)</h3>
+        <p>La voie la plus rapide. Tu revends directement la formation DSA et tu gardes 100% des bénéfices. Idéal pour démarrer sans créer de produit.</p>
+        <p><strong>Revenu potentiel :</strong> 497€ à 997€ par vente.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Vente de PLR personnalisés</h3>
+        <p>Tu prends les 15 produits PLR inclus, tu les rebrandises à ton nom dans ta niche, et tu les vends à ton audience.</p>
+        <p><strong>Revenu potentiel :</strong> 9€ à 97€ par produit selon le marché.</p>
+      </div>
+      <div class="card">
+        <h3>🎓 Création de ta propre formation</h3>
+        <p>Tu crées ta propre formation sur ta niche en t'appuyant sur les modules de la DSA. Tu la vends avec ta propre licence MRR ou en accès direct.</p>
+        <p><strong>Revenu potentiel :</strong> illimité selon ta communauté.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== FACELESS DCP =================== -->
+  <section id="faceless">
+    <div class="section-label">🎭 Business Sans Visage</div>
+    <h2>Versions Faceless — DCP</h2>
+    <p>Tu veux générer des revenus en ligne sans montrer ton visage ? La DSA inclut un programme complet <strong>Business Sans Visage (Faceless / DCP)</strong> pour créer du contenu 100% anonyme et automatisé.</p>
+
+    <div class="cards-grid" style="margin-top:20px">
+      <div class="card">
+        <h3>🎙️ Voix Off IA</h3>
+        <p>Utilise des outils comme <strong>ElevenLabs</strong> ou <strong>Murf.ai</strong> pour créer une voix off naturelle sans parler toi-même. Tu écris le script, l'IA parle.</p>
+        <span class="badge badge-green">100% anonyme</span>
+      </div>
+      <div class="card">
+        <h3>🤖 Avatar IA (Agent IA)</h3>
+        <p>Crée un personnage digital généré par IA via <strong>Agemo / Veo</strong> qui "parle" à ta place dans tes vidéos. Parfait pour TikTok, Instagram et YouTube.</p>
+        <span class="badge badge-green">Aucun visage requis</span>
+      </div>
+      <div class="card">
+        <h3>📝 Texte sur Fond</h3>
+        <p>Format de contenu minimaliste ultra populaire : texte animé sur fond coloré ou video stock. Aucune caméra, aucun studio, juste <strong>CapCut ou Canva</strong>.</p>
+        <span class="badge badge-green">Le plus simple</span>
+      </div>
+      <div class="card">
+        <h3>🎬 Montage Stock Vidéo</h3>
+        <p>Assemble des vidéos libres de droits (Pexels, Pixabay) avec une voix off et des sous-titres animés. Résultat professionnel sans apparaître à l'écran.</p>
+        <span class="badge badge-green">Rapide à produire</span>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:24px">
+      <div class="highlight-icon">🚀</div>
+      <h3>Créer ton Agent IA — Lien Direct</h3>
+      <p>Pour créer ton propre avatar IA (agent faceless), rends-toi directement sur la plateforme :</p>
+      <a href="https://codewords.agemo.ai/r/CMOEZLTU" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;padding:12px 24px;border-radius:40px;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;">
+        🤖 Créer mon Agent IA →
+      </a>
+      <p style="margin-top:12px;font-size:0.85rem">Tu obtiens 5$ de crédits gratuits à l'inscription pour commencer.</p>
+    </div>
+
+    <div class="tip" style="margin-top:16px">
+      💡 <strong>Workflow Faceless complet :</strong> Script IA (ChatGPT) → Voix off (ElevenLabs) → Avatar ou vidéo stock → Montage (CapCut) → Sous-titres auto → Publier sur TikTok/Instagram.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== PLUS D'INFOS VENTE =================== -->
+  <section id="vendre-plus">
+    <div class="section-label">💡 Stratégie Avancée</div>
+    <h2>Maximiser tes Ventes — Stratégies DSA</h2>
+    <p>Voici les stratégies concrètes pour vendre plus vite et plus efficacement avec la DSA :</p>
+
+    <div class="cards-grid" style="margin-top:20px">
+      <div class="card">
+        <h3>⚡ La méthode 1-3-7</h3>
+        <p><strong>1 post</strong> de valeur par jour → <strong>3 stories</strong> d'engagement → <strong>7 DM</strong> de suivi par semaine. Ce rythme génère la 1ère vente en général en moins de 30 jours.</p>
+      </div>
+      <div class="card">
+        <h3>🎯 Vendre par DM</h3>
+        <p>La vente par message privé est la plus efficace au départ. Un script simple : <em>accroche → problème → solution (DSA) → appel à l'action</em>. La DSA fournit des scripts prêts à utiliser.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Tunnel automatisé</h3>
+        <p>Systeme.io gratuit → page de capture → email automatique → page de vente → paiement Stripe. Une fois en place, le tunnel tourne seul 24h/24.</p>
+      </div>
+      <div class="card">
+        <h3>🔁 Upsell & Cross-sell</h3>
+        <p>Après la vente DSA, propose immédiatement tes PLR personnalisés en upsell. Une vente peut devenir <strong>2 à 3x plus rentable</strong> avec une bonne offre complémentaire.</p>
+      </div>
+      <div class="card">
+        <h3>📣 Preuve sociale</h3>
+        <p>Capture tes résultats (screenshot de vente, retours clients) et partage-les en stories. Les preuves sociales sont le levier de conversion le plus puissant dans ce marché.</p>
+      </div>
+      <div class="card">
+        <h3>💬 Communauté Skool</h3>
+        <p>La communauté DSA sur Skool (11 900+ membres) est une mine d'or : scripts qui convertissent, templates, retours d'expérience, lives hebdomadaires et coaching.</p>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:24px">
+      <div class="highlight-icon">💰</div>
+      <h3>Simulation de revenus réelle</h3>
+      <p>Prix de vente de base DSA = <strong>597€ par vente</strong>. Tu as acheté une fois → tu revends à l'infini :</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px">
+        <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent)">597€</div>
+          <div style="font-size:11px;color:var(--muted)">1 vente = formation remboursée</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent)">2 988€</div>
+          <div style="font-size:11px;color:var(--muted)">5 ventes / mois</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent)">5 970€</div>
+          <div style="font-size:11px;color:var(--muted)">10 ventes / mois</div>
+        </div>
+        <div style="background:var(--surface2);border-radius:12px;padding:14px;text-align:center">
+          <div style="font-size:1.4rem;font-family:'Syne',sans-serif;font-weight:800;color:var(--accent2)">∞</div>
+          <div style="font-size:11px;color:var(--muted)">Reventes illimitées</div>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:0.85rem">⚠️ Les revenus ne sont pas garantis et dépendent entièrement de ton travail et exécution.</p>
+    </div>
+  </section>
+  <section id="outils">
+    <div class="section-label">🛠️ Ressources</div>
+    <h2>Outils Essentiels du Business Digital</h2>
+
+    <table class="tool-table">
+      <thead>
+        <tr>
+          <th>Outil</th>
+          <th>Catégorie</th>
+          <th>Usage</th>
+          <th>Prix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Systeme.io</strong></td>
+          <td>Tunnel de vente</td>
+          <td>Tunnels, emails, pages de vente tout-en-un</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Beacons.ai</strong></td>
+          <td>Bio Link + Vente</td>
+          <td>Page vitrine + vente directe depuis tes réseaux</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Canva</strong></td>
+          <td>Design</td>
+          <td>Visuels, ebooks, templates, couvertures</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>CapCut</strong></td>
+          <td>Vidéo</td>
+          <td>Montage Reels, vidéos courtes, sous-titres auto</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>ChatGPT</strong></td>
+          <td>IA</td>
+          <td>Copywriting, création contenu, scripts vidéo</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Notion</strong></td>
+          <td>Organisation</td>
+          <td>Planning éditorial, suivi business, notes</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Brevo (ex Sendinblue)</strong></td>
+          <td>Email Marketing</td>
+          <td>Newsletters, séquences automatiques</td>
+          <td><span class="badge badge-green">Gratuit</span></td>
+        </tr>
+        <tr>
+          <td><strong>Stripe</strong></td>
+          <td>Paiement</td>
+          <td>Encaisser les paiements en ligne</td>
+          <td><span class="badge badge-orange">Commission 1.5%</span></td>
+        </tr>
+        <tr>
+          <td><strong>Skool</strong></td>
+          <td>Formation</td>
+          <td>Héberger tes modules, communauté privée</td>
+          <td><span class="badge badge-orange">99$/mois</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== BONUS FORMATIONS =================== -->
+  <section id="bonus-section">
+    <div class="section-label">🎁 Exclusif</div>
+    <h2>Formations Bonus — Produits Digitaux PLR</h2>
+    <p>En rejoignant via ce lien, tu accèdes à une sélection de <strong>formations digitales prêtes à revendre</strong> (PLR). Voici ta sélection personnalisée :</p>
+
+    <div class="bonus-header">
+      <div class="bonus-icon">🎁</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem">Tes Formations Bonus Exclusives</div>
+        <div class="bonus-subtitle">Produits PLR prêts à personnaliser & revendre — Accès immédiat</div>
+      </div>
+    </div>
+
+    <div class="bonus-grid" id="bonus-grid">
+      <!-- Injecté par JS -->
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== BOS + CURSOR =================== -->
+  <section id="bos">
+    <div class="section-label">💻 Outil Avancé</div>
+    <h2>Créer ton Business avec BOS + Cursor (IA)</h2>
+    <p>Pour aller encore plus loin et créer ton business avec l'aide de l'IA, voici le guide complet pour utiliser <strong>BOS sur Cursor</strong> :</p>
+
+    <div class="steps" style="margin-top:24px">
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>📥 Télécharge le fichier</h3>
+          <p>Va sur <strong>https://github.com/yomidenzel/BOS</strong> → Gros bouton vert "Code" en haut à droite → "Download ZIP". Double-clique le zip pour le décompresser.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>⚙️ Installe Cursor</h3>
+          <p><strong>cursor.sh</strong> → download → installe → lance.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🔓 Active Claude (optionnel mais ULTRA recommandé)</h3>
+          <p>Cursor marche avec un modèle gratuit par défaut, donc techniquement t'as pas besoin de payer pour lancer BOS. Mais sois clair : BOS a été conçu pour Claude. Avec un autre modèle, tu perds 50% de la qualité. Si t'es sérieux avec ton business, prends l'abonnement Cursor Pro (20$/mois) — c'est rien comparé à ce que ça va te débloquer.</p>
+          <p>Une fois abonné : dans Cursor, <strong>Cmd+, (Mac) ou Ctrl+, (Windows)</strong> → onglet "Models" → tu actives Claude Sonnet.</p>
+          <div class="highlight">
+            <h3>💎 Claude Cowork : 100% de qualité</h3>
+            <p>On peut aussi le faire avec <strong>Claude Cowork</strong> pour 100% de qualité, mais il faudra l'abonnement. Cursor reste gratuit mais 50% moins qualitatif que Claude Cowork si on exécute directement dessus.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>📁 Ouvre le dossier</h3>
+          <p><strong>File → Open Folder</strong> → tu choisis ton dossier BOS décompressé → Open.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">5</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>💬 Ouvre le chat et configure-le</h3>
+          <p><strong>Cmd+L (Mac) / Ctrl+L (Windows)</strong> pour ouvrir le chat à droite. En bas du chat, deux menus :</p>
+          <ul class="checklist" style="margin-top:8px">
+            <li><span class="check-icon">▶</span>Le modèle → Claude Sonnet (si t'as pris Pro), sinon laisse le modèle par défaut</li>
+            <li><span class="check-icon">⚠️</span>Le mode → <strong>Agent</strong> (pas Ask, pas Edit — Agent). Ce dernier détail est critique. Si t'es en Ask, ça marche pas.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">6</div>
+        </div>
+        <div class="step-body">
+          <h3>🗣️ Tu parles</h3>
+          <p>Tu tapes <strong>"go"</strong> dans le chat. C'est tout. BOS prend le relais, te pose les bonnes questions, et commence à bosser sur ton business.<br><strong>À toi de jouer.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== AGENT IA =================== -->
+  <section id="agent-ia">
+    <div class="section-label">🤖 Bonus Tech</div>
+    <h2>Créer ton Agent IA Gratuitement (Vidéos Veo 3.1)</h2>
+    <p>Grâce aux vidéos générées par IA, tu peux créer ton propre personnage ou avatar digital pour ton contenu. Voici comment :</p>
+
+    <div class="steps" style="margin-top:20px">
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">1</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>📝 Crée ton compte</h3>
+          <p>Rends-toi sur <strong>codewords.agemo.ai/r/CMOEZLTU</strong> pour créer ton compte.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">2</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>💰 Obtiens des crédits</h3>
+          <p>Tu obtiens <strong>5$ de crédits à l'inscription</strong> et des crédits régulièrement. Pour en obtenir davantage, tu peux créer un second compte (pro ou personnel) avec une adresse email active. <strong>À noter : utiliser des plateformes de mail temporaire comme TempMail pour multiplier les comptes est contre les règles d'utilisation de la plateforme — celle-ci peut bloquer ou bannir les comptes concernés.</strong> Un VPN peut limiter les risques, mais cela reste une pratique non conforme aux CGU.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">3</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🖼️ Donne une image de référence ou du texte</h3>
+          <p>Fournis une image ou une description pour créer ton agent IA avec une tête. <strong>Important : n'utilise pas de visage connu sur internet</strong> pour ne pas enfreindre les règles de vie privée et droit à l'image, ni créer un deepfake.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">4</div>
+          <div class="step-connector"></div>
+        </div>
+        <div class="step-body">
+          <h3>🎬 Donne le thème de la vidéo</h3>
+          <p>Choisis ton thème ou laisse l'IA générer un thème elle-même. Tu peux créer du contenu pour n'importe quelle niche.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-line">
+          <div class="step-dot">5</div>
+        </div>
+        <div class="step-body">
+          <h3>📲 Obtiens et publie ta vidéo</h3>
+          <p>Télécharge ta vidéo en <strong>MP4</strong> et publie-la sur tes réseaux sociaux. C'est ton agent IA qui "parle" pour toi — business sans visage 100% automatisé.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- IDÉES DE VIDÉOS -->
+    <div style="margin-top:32px">
+      <div class="section-label">💡 Inspiration</div>
+      <h3 style="margin-bottom:16px;font-size:1.1rem">Idées de Scènes pour ton Agent IA</h3>
+      <p style="margin-bottom:16px">Le secret d'une vidéo qui cartonne : un <strong>décor aspirationnel</strong> + un <strong>message simple</strong> + un <strong>hook fort dans les 2 premières secondes</strong>. Voici des idées concrètes :</p>
+
+      <div class="cards-grid">
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">🚗</div>
+          <h3 style="font-size:0.95rem">L'avatar sort d'une voiture de luxe</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Un homme en costume sort d'une Tesla noire devant un immeuble moderne, il regarde la caméra et parle de sa liberté financière."</em> Hook : "J'ai gagné 597€ pendant que je dormais."</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">🏝️</div>
+          <h3 style="font-size:0.95rem">L'avatar en télétravail depuis la plage</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Une femme avec un laptop sur une terrasse face à la mer, soleil couchant, elle montre son écran avec un dashboard de ventes."</em> Hook : "Voici mon bureau depuis 3 mois."</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">📱</div>
+          <h3 style="font-size:0.95rem">La notification de vente en temps réel</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Un avatar reçoit une notification sur son téléphone, sourit, montre l'écran à la caméra — montant visible : 597€."</em> Hook : "Encore une vente pendant mon déj."</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">🏙️</div>
+          <h3 style="font-size:0.95rem">Vue depuis un appartement en hauteur</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Avatar debout devant une baie vitrée avec vue sur une grande ville, bras croisés, il s'adresse à la caméra calmement."</em> Hook : "Je vais t'expliquer comment j'ai quitté mon 9h-18h."</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">💻</div>
+          <h3 style="font-size:0.95rem">Le reveal de dashboard de ventes</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Gros plan sur un écran MacBook montrant un Stripe ou Systeme.io avec des ventes, mains de l'avatar qui scrolle."</em> Hook : "Ce mois-ci, voilà ce que ça donne."</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.6rem;margin-bottom:8px">✈️</div>
+          <h3 style="font-size:0.95rem">L'avatar à l'aéroport ou dans l'avion</h3>
+          <p style="font-size:0.84rem">Prompt : <em>"Avatar en lounge d'aéroport, valise à côté, qui parle à la caméra de son lifestyle digital nomade."</em> Hook : "Je parte à Dubaï... et mon business tourne sans moi."</p>
+        </div>
+      </div>
+
+      <div class="tip" style="margin-top:20px">
+        💡 <strong>Formule gagnante :</strong> Décor aspirationnel (voiture/plage/ville) + Hook choc (chiffre ou révélation) + Contenu valeur (conseil rapide) + CTA (lien en bio). Durée idéale : <strong>15 à 30 secondes</strong> pour TikTok/Reels.
+      </div>
+
+      <div class="warning" style="margin-top:12px">
+        <strong>⚠️ Rappel :</strong> N'utilise pas le visage d'une vraie personne connue pour ton avatar. Crée un personnage fictif depuis une description texte ou une photo générée par IA.
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== MARKETING RÉEL =================== -->
+  <section id="marketing-reel">
+    <div class="section-label">📈 Marketing Digital</div>
+    <h2>Comment Gagner Réellement — Les Vraies Stratégies</h2>
+    <p>La DSA t'apprend le marketing digital dans sa globalité. Voici les stratégies concrètes, appliquées par les membres qui génèrent des revenus réguliers :</p>
+
+    <div style="margin-top:28px">
+      <h3 style="margin-bottom:16px">🧠 Les 5 Piliers du Marketing Digital Efficace</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">1</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-body">
+            <h3>🎯 Cibler avant de créer</h3>
+            <p>Avant de poster quoi que ce soit, définis <strong>exactement à qui tu parles</strong>. Un message qui s'adresse à tout le monde ne touche personne. Exemple : "les 18-30 ans qui veulent quitter leur emploi et gagner de l'argent en ligne" est bien plus efficace que "tout le monde".</p>
+            <div class="tip">Pose-toi : qui est mon client idéal ? Quel est son problème principal ? Qu'est-ce qu'il veut ressentir après avoir acheté ?</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">2</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-body">
+            <h3>🔥 Le contenu qui crée de la confiance</h3>
+            <p>Les gens achètent à ceux en qui ils ont confiance. Pour construire cette confiance rapidement, alterne entre 3 types de posts :</p>
+            <ul class="checklist" style="margin-top:10px">
+              <li><span class="check-icon">📚</span><strong>Éducatif</strong> — donne de la valeur gratuite (tips, tutoriels, explications). C'est 60% de ton contenu.</li>
+              <li><span class="check-icon">🤝</span><strong>Preuve sociale</strong> — montre les résultats (screenshots de ventes, témoignages, progression). C'est 30% de ton contenu.</li>
+              <li><span class="check-icon">💸</span><strong>Vente directe</strong> — CTA clair vers ton produit. C'est 10% de ton contenu. Pas plus, sinon tu perds ton audience.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">3</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-body">
+            <h3>⚡ L'algorithme travaille pour toi</h3>
+            <p>Instagram et TikTok poussent le contenu qui garde les gens sur la plateforme. Les formats qui marchent le mieux en 2025 :</p>
+            <div class="cards-grid" style="margin-top:12px">
+              <div class="card" style="padding:14px">
+                <h3 style="font-size:0.88rem">Reels 7-15s</h3>
+                <p style="font-size:0.82rem">Hook visuel + info choc. Le plus viral. Idéal pour toucher de nouveaux comptes.</p>
+              </div>
+              <div class="card" style="padding:14px">
+                <h3 style="font-size:0.88rem">Carrousels</h3>
+                <p style="font-size:0.82rem">5 à 10 slides. Très partagés. Parfait pour les tips "liste de X choses à savoir".</p>
+              </div>
+              <div class="card" style="padding:14px">
+                <h3 style="font-size:0.88rem">Stories quotidiennes</h3>
+                <p style="font-size:0.82rem">Pour fidéliser ton audience existante. Montre ton quotidien, tes ventes, tes coulisses.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">4</div>
+            <div class="step-connector"></div>
+          </div>
+          <div class="step-body">
+            <h3>💬 La vente par DM — le levier le plus sous-estimé</h3>
+            <p>La plupart des gens postent et attendent. Les top performers <strong>envoient des DM</strong>. Voici le script DSA qui convertit :</p>
+            <div class="code-block">
+1. Accroche personnalisée : "J'ai vu ton Reel sur [sujet], vraiment utile."
+2. Valeur gratuite : "Je t'envoie [ressource] qui peut t'aider sur [problème]."
+3. Question : "Tu cherches à [objectif] en ce moment ?"
+4. Si oui → présenter la DSA naturellement, sans forcer.
+5. CTA simple : "Je t'envoie le lien ?"
+            </div>
+            <div class="tip" style="margin-top:10px">Objectif : <strong>10 DM qualifiés par jour</strong> = en moyenne 1 vente tous les 3-4 jours au début.</div>
+
+            <div class="highlight" style="margin-top:16px">
+              <div class="highlight-icon">🤝</div>
+              <h3>La règle d'or : ne vends pas à tout le monde</h3>
+              <p>Avant de pitcher ton produit, <strong>comprends d'abord ton prospect</strong>. Pose des questions sincères : Qu'est-ce qu'il cherche vraiment ? Où il en est dans son projet ? Quelles sont ses contraintes ?</p>
+              <p style="margin-top:8px">Si tu sens que la DSA ne correspond pas à ce qu'il veut ou à sa situation, <strong>ne force pas la vente</strong>. Un client forcé = remboursement, avis négatif, mauvaise réputation. Un client bien qualifié = satisfaction, bouche-à-oreille, fidélité.</p>
+              <ul class="checklist" style="margin-top:12px">
+                <li><span class="check-icon">✅</span>"Tu cherches à générer des revenus en ligne ou c'est juste une curiosité pour l'instant ?"</li>
+                <li><span class="check-icon">✅</span>"Tu as du temps à investir chaque jour sur ça, même 1h ?"</li>
+                <li><span class="check-icon">✅</span>"C'est quoi ton objectif principal — liberté de temps, revenu complémentaire, quitter ton emploi ?"</li>
+                <li><span class="check-icon">❌</span>Si les réponses montrent que ce n'est pas le bon moment pour lui → laisse tomber. Propose-lui de revenir quand il sera prêt. Il se souviendra que tu n'as pas forcé.</li>
+              </ul>
+              <p style="margin-top:10px;font-size:0.88rem">Les meilleurs vendeurs ne sont pas ceux qui convainquent le plus — ce sont ceux qui <strong>qualifient le mieux</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-line">
+            <div class="step-dot">5</div>
+          </div>
+          <div class="step-body">
+            <h3>🔄 Automatiser pour scaler</h3>
+            <p>Une fois la machine lancée, automatise tout ce qui est répétable :</p>
+            <ul class="checklist" style="margin-top:10px">
+              <li><span class="check-icon">⚙️</span><strong>Réponses automatiques Instagram</strong> (ManyChat) — envoie ton lien automatiquement quand quelqu'un commente un mot-clé.</li>
+              <li><span class="check-icon">📧</span><strong>Séquence email automatique</strong> (Systeme.io) — 5 emails sur 7 jours qui vendent à ta place.</li>
+              <li><span class="check-icon">📅</span><strong>Planification de contenu</strong> (Later, Buffer) — prépare 1 semaine de posts en 2h le dimanche.</li>
+              <li><span class="check-icon">🤖</span><strong>Agent IA pour les DM</strong> — répond aux questions fréquentes automatiquement pendant que tu dors.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:36px">
+      <h3 style="margin-bottom:16px">📊 Hooks qui font exploser les vues</h3>
+      <p style="margin-bottom:12px">Un hook = la première phrase ou image de ton contenu. C'est <strong>90% de ton succès</strong>. Si les 2 premières secondes n'accrochent pas, personne ne regarde la suite. Voici les formules qui marchent :</p>
+      <div class="cards-grid">
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">😱</div>
+          <h3 style="font-size:0.9rem">Le chiffre choc</h3>
+          <p style="font-size:0.83rem">"J'ai fait 1 194€ en 48h sans montrer mon visage." — Un chiffre précis = crédibilité instantanée.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">🤫</div>
+          <h3 style="font-size:0.9rem">Le secret révélé</h3>
+          <p style="font-size:0.83rem">"Ce que personne ne te dit sur le business en ligne en 2025." — La curiosité est le moteur numéro 1 du clic.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">❌</div>
+          <h3 style="font-size:0.9rem">L'erreur courante</h3>
+          <p style="font-size:0.83rem">"Si tu fais encore ça, tu ne vendras jamais." — Le négatif attire l'attention et crée de l'urgence.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">⏱️</div>
+          <h3 style="font-size:0.9rem">La promesse rapide</h3>
+          <p style="font-size:0.83rem">"En 60 secondes je t'explique comment gagner ta première vente DSA." — Simple, direct, tenu.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">🎯</div>
+          <h3 style="font-size:0.9rem">L'identification directe</h3>
+          <p style="font-size:0.83rem">"Si tu es encore salarié et que tu veux t'en sortir, regarde ça." — Le prospect se reconnaît immédiatement.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.4rem;margin-bottom:6px">📈</div>
+          <h3 style="font-size:0.9rem">Le avant / après</h3>
+          <p style="font-size:0.83rem">"Il y a 6 mois j'avais 0 abonnés et 0€ de revenus en ligne. Voilà où j'en suis." — La transformation = la vente.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:28px">
+      <div class="highlight-icon">🗓️</div>
+      <h3>Planning Hebdomadaire type — Débutant</h3>
+      <p style="margin-bottom:12px">Tu n'as pas besoin de bosser 8h/jour. Voici ce qu'un débutant sérieux fait en <strong>1h à 2h par jour</strong> pour générer ses premières ventes :</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);min-width:36px">Lun</span>
+          <span style="font-size:0.88rem">Créer 3 Reels avec l'agent IA ou en faceless. Programmer sur CapCut.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);min-width:36px">Mar</span>
+          <span style="font-size:0.88rem">10 DM qualifiés. Répondre aux commentaires. 1 carrousel éducatif.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);min-width:36px">Mer</span>
+          <span style="font-size:0.88rem">Stories de valeur + 1 story de vente. Vérifier les stats de la semaine.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);min-width:36px">Jeu</span>
+          <span style="font-size:0.88rem">3 nouveaux Reels. Suivre de nouveaux comptes dans ta niche. 10 DM.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent);min-width:36px">Ven</span>
+          <span style="font-size:0.88rem">Contenu "preuve sociale" (vente du mois, progression). Email à ta liste si tu en as une.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--accent2);min-width:36px">Sam</span>
+          <span style="font-size:0.88rem">Batch content : préparer toute la semaine suivante en 2h. Créer les visuels sur Canva.</span>
+        </div>
+        <div style="background:var(--surface2);border-radius:10px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start">
+          <span style="font-family:'Syne',sans-serif;font-weight:800;color:var(--muted);min-width:36px">Dim</span>
+          <span style="font-size:0.88rem">Repos ou veille : regarder ce qui marche dans ta niche. Analyser les tops Reels.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- =================== FAQ =================== -->
+  <section id="faq">
+    <div class="section-label">❓ Questions</div>
+    <h2>FAQ — Questions Fréquentes</h2>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Est-ce que la DSA est légale en France ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">Oui, la DSA est légale. Elle repose sur la vente de produits digitaux avec droits de revente MRR et PLR, un modèle autorisé en France. Ce qui importe : être transparent sur ce que tu vends, avoir un vrai produit avec de la valeur pédagogique, et ne pas faire passer tes revenus uniquement par le recrutement.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Combien peut-on gagner avec la DSA ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">Les revenus dépendent entièrement de ton travail et de ton exécution. Certains membres rapportent leur première vente en quelques jours, d'autres en quelques semaines. Une vente de la formation = 597€ selon ton prix de base. Les revenus ne sont jamais garantis — c'est un business, pas un placement financier.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Faut-il montrer son visage ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">Non ! La DSA inclut un programme complet "Business Sans Visage" (Faceless). Tu peux créer du contenu entièrement anonyme : voix off IA, avatars, texte sur fond, sous-titres animés... Parfait pour ceux qui veulent garder leur vie privée.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Combien de temps faut-il investir par jour ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">La DSA est conçue pour fonctionner avec 1 à 2 heures par jour minimum. Plus tu investes de temps au début (contenu, mise en place du tunnel), plus tu automatises vite. Certains membres la suivent le soir après le travail.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Est-ce que la DSA fonctionne à l'étranger ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">Oui, la formation est accessible partout dans le monde. Tu peux vendre en France, Belgique, Suisse, Canada, DOM-TOM et partout où il y a une connexion internet. Il te faut juste un moyen de paiement (carte bancaire ou PayPal).</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Puis-je personnaliser les produits PLR ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">Oui ! Les 15 produits PLR inclus peuvent être modifiés, rebrandisés à ton nom et revendus comme si tu les avais créés toi-même. Tu peux changer le titre, la couverture, ajouter ton branding, modifier le contenu... Tout est autorisé avec une licence PLR.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">Quelle est la différence entre la DSA et d'autres formations ? <span class="faq-arrow">›</span></div>
+      <div class="faq-a">La DSA combine apprentissage + produit clé en main + licence de revente. La plupart des formations t'apprennent juste la théorie. Ici, tu as en plus un produit prêt à vendre (la DSA elle-même) et 15 PLR pour commencer à générer des revenus rapidement, sans créer de produit.</div>
+    </div>
+  </section>
+
+  <!-- =================== CTA =================== -->
+  <div class="cta-banner">
+    <div class="section-label">🚀 Prêt à démarrer ?</div>
+    <h2>Lance ton Business Digital Aujourd'hui</h2>
+    <p style="color:var(--muted);max-width:500px;margin:0 auto">Rejoins 11 900+ membres qui ont déjà choisi la DSA pour créer leur liberté financière en ligne. Accès immédiat, licence MRR incluse, 15 PLR offerts.</p>
+    <a href="#" class="cta-btn">Accéder à la DSA 🚀</a>
+  </div>
+
+  <footer>
+    <p>Formation DSA — Digital Success Academy • Tous droits réservés</p>
+    <p style="margin-top:8px;font-size:11px">Cette formation est un produit éducatif. Les revenus présentés sont des exemples et non des garanties. Les résultats varient selon l'effort, le marché et l'exécution individuelle.</p>
+  </footer>
+</div>
+
+<script>
+/* ===== THEME ===== */
+function setTheme(t) {
+  document.body.className = t;
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+  const map = { dark:'t-dark', light:'t-light', white:'t-white', neon:'t-neon' };
+  document.querySelector('.'+map[t]).classList.add('active');
+  localStorage.setItem('dsa-theme', t);
+}
+(function(){
+  const saved = localStorage.getItem('dsa-theme') || 'dark';
+  setTheme(saved);
+})();
+
+/* ===== READING PROGRESS ===== */
+window.addEventListener('scroll', () => {
+  const h = document.body.scrollHeight - window.innerHeight;
+  const pct = h > 0 ? Math.round((window.scrollY / h) * 100) : 0;
+  document.getElementById('reading-progress').style.width = pct + '%';
+  document.getElementById('toc-fill').style.width = pct + '%';
+  document.getElementById('toc-label').textContent = pct + '%';
+});
+
+/* ===== TOC TOGGLE ===== */
+function toggleToc() {
+  const list = document.getElementById('toc-list');
+  const arrow = document.getElementById('toc-arrow');
+  list.classList.toggle('visible');
+  arrow.classList.toggle('open');
+}
+
+/* ===== MODULE TOGGLE ===== */
+function toggleModule(el) {
+  const content = el.querySelector('.module-content');
+  content.classList.toggle('open');
+}
+
+/* ===== FAQ ===== */
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const arrow = el.querySelector('.faq-arrow');
+  answer.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+/* ===== BONUS FORMATIONS — UNIQUE A CHAQUE OUVERTURE ===== */
+const allBonusFormations = [
+  { emoji:'🔥', title:'7 Jours pour Battre la Procrastination', desc:'Programme quotidien avec exercices pratiques pour reprendre le contrôle de ton temps et arrêter de remettre à demain.', days:'7 jours', color:'color-1' },
+  { emoji:'🏋️', title:'30 Exercices pour Perdre du Poids', desc:'Guide complet avec entraînements progressifs adaptés à tous les niveaux, sans matériel ni salle de sport.', days:'30 exercices', color:'color-2' },
+  { emoji:'💰', title:'Les 5 Investissements du Débutant', desc:'Comprendre la bourse, l\'immobilier numérique et les cryptos pour un patrimoine diversifié dès 18 ans.', days:'5 stratégies', color:'color-3' },
+  { emoji:'🧘', title:'21 Jours de Méditation Anti-Stress', desc:'Rituels matinaux et techniques de respiration pour réduire l\'anxiété et améliorer ta concentration au quotidien.', days:'21 jours', color:'color-4' },
+  { emoji:'📚', title:'Apprendre l\'Anglais en 60 Jours', desc:'Méthode par immersion progressive, vocabulaire ciblé et pratique orale quotidienne pour atteindre B2.', days:'60 jours', color:'color-5' },
+  { emoji:'💕', title:'Construire une Relation Saine', desc:'Guide psychologique pour comprendre ses attachements, poser des limites et attirer des relations équilibrées.', days:'Guide complet', color:'color-6' },
+  { emoji:'🍽️', title:'Le Plan Nutrition Forme & Énergie', desc:'Plan alimentaire sur 4 semaines avec recettes rapides, listes de courses et principes de la chrono-nutrition.', days:'4 semaines', color:'color-1' },
+  { emoji:'🧠', title:'Développer sa Mémoire en 14 Jours', desc:'Techniques de mémorisation (palais de mémoire, répétition espacée) pour retenir plus vite et plus longtemps.', days:'14 jours', color:'color-2' },
+  { emoji:'😴', title:'Le Guide du Sommeil Parfait', desc:'Protocole complet pour optimiser ta récupération, t\'endormir en moins de 10 minutes et te réveiller énergique.', days:'Guide complet', color:'color-3' },
+  { emoji:'📸', title:'Instagram 0 → 10K Abonnés', desc:'Stratégie contenu étape par étape pour croître organiquement sur Instagram en moins de 90 jours.', days:'90 jours', color:'color-4' },
+  { emoji:'🗣️', title:'Prendre la Parole en Public', desc:'Exercices quotidiens pour vaincre le trac, structurer ses discours et captiver n\'importe quel audience.', days:'30 jours', color:'color-5' },
+  { emoji:'🌿', title:'Minimalisme : Vivre avec Moins', desc:'Méthode pour désencombrer ta vie (maison, digital, mental) et gagner en clarté, temps et argent.', days:'Guide complet', color:'color-6' },
+  { emoji:'💼', title:'CV & Entretien : Décrocher ton Poste', desc:'Templates de CV qui convertissent, préparation aux questions pièges et négociation salariale.', days:'Guide complet', color:'color-1' },
+  { emoji:'🎯', title:'Fixer et Atteindre ses Objectifs', desc:'Système OKR simplifié pour débutants. De la définition au suivi hebdomadaire, transforme tes rêves en réalité.', days:'12 semaines', color:'color-2' },
+  { emoji:'🐾', title:'Éduquer son Chien en 30 Jours', desc:'Programme d\'éducation positive pour les 15 commandements essentiels, valable pour tous les âges et races.', days:'30 jours', color:'color-3' },
+  { emoji:'🍳', title:'Cuisiner Healthy en 20 Minutes', desc:'50 recettes rapides et équilibrées avec moins de 8 ingrédients. Meal prep, batch cooking, et zéro gâchis.', days:'50 recettes', color:'color-4' },
+  { emoji:'💻', title:'Freelance : Tes 3 Premiers Clients', desc:'Stratégie de prospection, pricing et contrats pour lancer ton activité freelance et décrocher tes premiers clients payants.', days:'Guide complet', color:'color-5' },
+  { emoji:'🌍', title:'Voyager Low Cost & Smart', desc:'Guide complet des bons plans : Skyscanner avancé, hacks hotels, passes transport et destinations sous-cotées.', days:'Guide complet', color:'color-6' },
+];
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function loadBonuses() {
+  const shuffled = shuffleArray(allBonusFormations);
+  // 12 formations bonus (correspond au nombre indiqué dans la DSA officielle)
+  const selected = shuffled.slice(0, 12);
+  const grid = document.getElementById('bonus-grid');
+  grid.innerHTML = selected.map(f => `
+    <div class="bonus-card ${f.color}">
+      <div class="bonus-emoji">${f.emoji}</div>
+      <div class="bonus-title">${f.title}</div>
+      <div class="bonus-desc">${f.desc}</div>
+      <span class="bonus-days">📅 ${f.days}</span>
+    </div>
+  `).join('');
+}
+
+loadBonuses();
+
+/* ===== SECTION PROGRESS ===== */
+const sectionIds = ['cest-quoi','mrr-plr','modules','comment-vendre','faceless','bonus-section','bos','agent-ia','marketing-reel','faq'];
+
+function updateSectionProgress() {
+  const winH = window.innerHeight;
+  const scrollY = window.scrollY;
+
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.offsetTop;
+    const height = el.offsetHeight;
+    let pct = 0;
+    if (scrollY + winH > top) {
+      pct = Math.min(100, Math.round(((scrollY + winH - top) / height) * 100));
+    }
+    const fill = document.getElementById('prog-' + id);
+    const label = document.getElementById('pct-' + id);
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.textContent = pct + '%';
+
+    const card = document.querySelector('[data-section="' + id + '"]');
+    if (card) {
+      if (scrollY + winH/2 >= top && scrollY < top + height) {
+        card.classList.add('active');
+      } else {
+        card.classList.remove('active');
+      }
+    }
+  });
+}
+
+window.addEventListener('scroll', updateSectionProgress);
+updateSectionProgress();
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section, .card, .module-card, .platform-card, .bonus-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
